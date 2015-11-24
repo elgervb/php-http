@@ -1,0 +1,32 @@
+{
+  "name": "gulp-php",
+  "version": "1.0.0",
+  "description": "PHP HTTP",
+  "main": "",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elgervb/php-http.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elgervb/php-http/issues"
+  },
+  "homepage": "https://github.com/elgervb/php-http",
+  "devDependencies": {
+    "browser-sync": "^2.10.0",
+    "gulp": "^3.9.0",
+    "gulp-connect-php": "0.0.5",
+    "gulp-if": "^2.0.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-phpunit": "^0.9.1",
+    "lodash": "^3.10.1",
+    "yargs": "^3.30.0"
+  }
+}

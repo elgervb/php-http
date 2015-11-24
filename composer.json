@@ -1,0 +1,34 @@
+{
+	"name" : "elgervb/php-http",
+	"description" : "php-http",
+	"type" : "library",
+	"authors" : [{
+			"name" : "Elger van Boxtel",
+			"email" : "elgervb@gmail.com",
+			"homepage" : "http://elgervanboxtel.nl",
+			"role" : "developer"
+		}
+	],
+	"keywords" : [
+		"php",
+		"view"
+	],
+	"homepage" : "https://github.com/elgervb/php-http",
+	"license" : [
+		"MIT"
+	],
+	"require-dev" : {
+		"phpunit/phpunit" : "^4.8"
+	},
+	"autoload" : {
+		"psr-0" : {
+			"http" : "src"
+		}
+	},
+	"support" : {
+		"wiki" : "https://github.com/elgervb/php-http/wiki",
+		"source" : "https://github.com/elgervb/php-http",
+		"issues" : "https://github.com/elgervb/php-http/issues",
+		"email" : "elgervb@gmail.com"
+	}
+}
