@@ -256,7 +256,7 @@ class HttpRequest
         if ($aIndex === null) {
             return $this->filter($_POST[$aPostKey]);
         } else {
-            return is_array($_POST[$aPostKey]) && count($_POST[$aPostKey]) > $aIndex ? $_POST[$aPostKey][$aIndex] : null;
+            return is_array($_POST[$aPostKey]) && isset($_POST[$aPostKey][$aIndex]) ? $_POST[$aPostKey][$aIndex] : null;
         }
     }
 
