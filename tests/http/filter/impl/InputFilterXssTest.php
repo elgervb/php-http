@@ -24,57 +24,6 @@ class InputFilterXssTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {}
-
-    /**
-     * @covers compact\http\filter\impl\InputFilterXss::setRemoveReplacementString
-     *
-     * @todo Implement testSetRemoveReplacementString().
-     */
-    public function testSetRemoveReplacementString()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete('This test has not been implemented yet.');
-    }
-
-    /**
-     * @covers compact\http\filter\impl\InputFilterXss::compactExplodedWordsCallback
-     *
-     * @todo Implement testCompactExplodedWordsCallback().
-     */
-    public function testCompactExplodedWordsCallback()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete('This test has not been implemented yet.');
-    }
-
-    /**
-     * @covers compact\http\filter\impl\InputFilterXss::convertAttributeCallback
-     *
-     * @todo Implement testConvertAttributeCallback().
-     */
-    public function testConvertAttributeCallback()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete('This test has not been implemented yet.');
-    }
-
-    /**
-     * @covers compact\http\filter\impl\InputFilterXss::entityDecode
-     *
-     * @todo Implement testEntityDecode().
-     */
-    public function testEntityDecode()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete('This test has not been implemented yet.');
-    }
-
-    /**
      * @covers compact\http\filter\impl\InputFilterXss::filter
      *
      * @todo Implement testFilter().
@@ -104,60 +53,4 @@ class InputFilterXssTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $result);
     }
-
-    /**
-     * @covers compact\http\filter\impl\InputFilterXss::jsImgRemovalCallback
-     *
-     * @todo Implement testJsImgRemovalCallback().
-     */
-    public function testJsImgRemovalCallback()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete('This test has not been implemented yet.');
-    }
-
-    /**
-     * @covers compact\http\filter\impl\InputFilterXss::jsLinkRemovalCallback
-     *
-     * @todo Implement testJsLinkRemovalCallback().
-     */
-    public function testJsLinkRemovalCallback()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete('This test has not been implemented yet.');
-    }
-
-    /**
-     * @covers compact\http\filter\impl\InputFilterXss::xssClean
-     *
-     * @todo Implement testXssClean().
-     */
-    public function testXssClean()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete('This test has not been implemented yet.');
-    }
-
-    /**
-     * @covers compact\http\filter\impl\InputFilterXss::sanitizeFilename
-     *
-     * @todo Implement testSanitizeFilename().
-     */
-    public function testSanitizeFilename()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete('This test has not been implemented yet.');
-    }
-
-    /**
-     * @covers compact\http\filter\impl\InputFilterXss::sanitizeNaughtyHtmlCallback
-     *
-     * @todo Implement testSanitizeNaughtyHtmlCallback().
-     */
-    public function testSanitizeNaughtyHtmlCallback()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete('This test has not been implemented yet.');
-    }
 }
-?>
