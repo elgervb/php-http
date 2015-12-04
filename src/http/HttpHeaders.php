@@ -5,9 +5,6 @@ namespace http;
  * Http Headers
  *
  * @see http://www.faqs.org/rfcs/rfc2616 for more information
- *     
- * @package web
- * @subpackage http
  */
 class HttpHeaders
 {

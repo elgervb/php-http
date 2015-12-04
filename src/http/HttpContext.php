@@ -11,19 +11,19 @@ class HttpContext
     private static $instance;
     /**
      *
-     * @var compact\http\HttpRequest
+     * @var \http\HttpRequest
      */
     private $request;
 
     /**
      *
-     * @var compact\http\HttpResponse
+     * @var \http\HttpResponse
      */
     private $response;
 
     /**
      *
-     * @var compact\http\HttpSession
+     * @var \http\HttpSession
      */
     private $session;
 
@@ -53,7 +53,7 @@ class HttpContext
     /**
      * Returns the http request
      *
-     * @return \compact\http\HttpRequest
+     * @return \http\HttpRequest
      */
     public function getRequest()
     {
@@ -66,7 +66,7 @@ class HttpContext
     /**
      * Reurns the http response
      *
-     * @return \compact\http\HttpResponse
+     * @return \http\HttpResponse
      */
     public function getResponse()
     {
@@ -79,7 +79,7 @@ class HttpContext
     /**
      * Returns the cookie manager
      *
-     * @return \compact\http\HttpCookieManager
+     * @return \http\HttpCookieManager
      */
     public function getCookieManager()
     {
@@ -89,7 +89,7 @@ class HttpContext
     /**
      * Returns the session
      *
-     * @return \compact\http\HttpSession
+     * @return \http\HttpSession
      */
     public function getSession()
     {

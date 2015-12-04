@@ -1,7 +1,7 @@
 <?php
 namespace http\filter\impl;
 
-use http\filter\ITextFilter;
+use \http\filter\ITextFilter;
 
 class InputFilterXss implements ITextFilter
 {
@@ -37,7 +37,6 @@ class InputFilterXss implements ITextFilter
      * List of never allowed regex replacement
      *
      * @var array
-     * @access protected
      */
     private $never_allowed_regex = array(
         'javascript\s*:',

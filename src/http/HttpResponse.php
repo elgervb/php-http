@@ -179,9 +179,7 @@ class HttpResponse
     }
 
     /**
-     * Returns the writer for outputting
-     *
-     * @return \compact\io\writer\StreamWriter
+     * write output
      */
     public function write($content)
     {
@@ -288,8 +286,6 @@ class HttpResponse
      * @see http://www.nczonline.net/blog/2010/05/25/cross-domain-ajax-with-cross-origin-resource-sharing/
      * @see http://enable-cors.org/
      * @see http://www.html5rocks.com/en/tutorials/cors/
-     * 
-     * TODO https://github.com/elgervb/compact/issues/32
      */
     public function setCORSHeaders()
     {
