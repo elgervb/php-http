@@ -188,7 +188,7 @@ class HttpResponse
         }
         flock($this->stream, LOCK_EX);
         fwrite($this->stream, $content);
-        flock($this->handle, LOCK_UN);
+        flock($this->stream, LOCK_UN);
     }
 
     /**
