@@ -76,13 +76,6 @@ class HttpResponse
     private $headers;
 
     /**
-     * Flag to keep track if the response headers have already been send
-     *
-     * @var boolean
-     */
-    private $isFlushed = false;
-
-    /**
      * The status code of the response
      *
      * @var int
@@ -120,6 +113,11 @@ class HttpResponse
     {
         $this->headers[$aHeader] = $aValue;
     }
+    
+    public function close() {
+        $this->flush();
+        fclose($this->stream);
+    }
 
     /**
      * Set headers for disabeling browser cache
@@ -138,13 +136,11 @@ class HttpResponse
      */
     public function flush()
     {
-        if ($this->isFlushed === false) {
+        if (!headers_sent()) {
             // send response headers
             $this->sendResponseHeader();
             $this->sendContentTypeHeader();
             $this->sendHeaders();
-            
-            $this->isFlushed = true;
         }
         
         // send output
