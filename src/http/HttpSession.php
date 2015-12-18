@@ -2,7 +2,7 @@
 namespace http;
 
 /**
- * 
+ *
  * @author eaboxt
  */
 class HttpSession
@@ -13,6 +13,13 @@ class HttpSession
      * @var HttpSession
      */
     private static $instance;
+
+    /**
+     * The session timeout defaults to 1 hour
+     * 
+     * @var int
+     */
+    private $timeout = 3600;
 
     /**
      * Creates a new HttpSession
@@ -82,13 +89,13 @@ class HttpSession
     }
 
     /**
-     * Return current cache expire
-     *
-     * @return int
+     * Returns the session timeout in seconds
+     * 
+     * @return number the session timeout in seconds
      */
-    public function getCacheExpire()
+    public function getTimeout()
     {
-        return session_cache_expire();
+        return $this->timeout;
     }
 
     /**
@@ -152,13 +159,16 @@ class HttpSession
     }
 
     /**
-     * Return current cache expire
+     * Set the session timeout
      *
-     * @param int $value The cache expiration in minutes
+     * @param number $timeout
+     *            The session timeout in seconds
      */
-    public function setCacheExpire($value)
+    public function setTimeout($timeout)
     {
-        session_cache_expire($value);
+        $this->timeout = $timeout;
+        ini_set("session.gc_maxlifetime", $timeout);
+        ini_set("session.cookie_lifetime", $timeout);
     }
 
     /**
@@ -174,22 +184,30 @@ class HttpSession
 
     /**
      * Starts the session
-     *
+     * 
      * @throws \RuntimeException when headers have already been sent
-     *        
-     * @return boolean
+     * 
+     * @return boolean whether starting the session succeeded
+     * 
+     * @see https://stackoverflow.com/questions/520237/how-do-i-expire-a-php-session-after-30-minutes/1270960#1270960 for session timeout idea
      */
     public function start()
     {
-        $result = false;
+        if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > $this->getTimeout())) {
+            // last request was more than the timeout duration
+            $this->destroy();
+            return false;
+        }
         
         if ($this->isStarted()) {
-            $result = true;
+            return true;
         } elseif (headers_sent()) {
             throw new \RuntimeException('Could not start session, headers have already been sent');
         } else {
             session_start();
-            $result = true;
+            // update last activity time stamp
+            $_SESSION['LAST_ACTIVITY'] = time(); 
+            return true;
         }
         
         return $result;
