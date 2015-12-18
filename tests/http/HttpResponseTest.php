@@ -33,9 +33,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers compact\http\HttpResponse::getCharSet
-     *
-     * @todo Implement testGetCharSet().
+     * @covers \http\HttpResponse::getCharSet
      */
     public function testGetCharSet()
     {
@@ -45,9 +43,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers compact\http\HttpResponse::getContentType
-     *
-     * @todo Implement testGetContentType().
+     * @covers \http\HttpResponse::getContentType
      */
     public function testGetDefaultContentType()
     {
@@ -55,9 +51,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * @covers compact\http\HttpResponse::getContentType
-     *
-     * @todo Implement testGetContentType().
+     * @covers \http\HttpResponse::getContentType
      */
     public function testGetContentType()
     {
@@ -67,9 +61,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers compact\http\HttpResponse::getStatusCode
-     *
-     * @todo Implement testGetStatusCode().
+     * @covers \http\HttpResponse::getStatusCode
      */
     public function testGetStatusCode()
     {
@@ -79,9 +71,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers compact\http\HttpResponse::setStatusCode
-     *
-     * @todo Implement testSetStatusCode().
+     * @covers \http\HttpResponse::setStatusCode
      */
     public function testSetStatusCode()
     {
