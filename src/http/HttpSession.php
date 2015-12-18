@@ -199,6 +199,12 @@ class HttpSession
             return false;
         }
         
+        /*
+         * TODO prevent session fixation 
+         * Example: https://stackoverflow.com/questions/520237/how-do-i-expire-a-php-session-after-30-minutes/1270960#1270960
+         * Details: https://www.owasp.org/index.php/Session_fixation
+         */
+        
         if ($this->isStarted()) {
             return true;
         } elseif (headers_sent()) {
