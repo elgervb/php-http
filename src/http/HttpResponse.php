@@ -144,9 +144,11 @@ class HttpResponse
         }
         
         // send output
-        fflush($this->stream);
+        if (is_resource($this->stream)) {
+            fflush($this->stream);
+        }
     }
-
+    
     /**
      *
      * @return string
