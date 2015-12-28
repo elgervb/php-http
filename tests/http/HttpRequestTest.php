@@ -61,6 +61,36 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('testValue', $this->object->getPost('test', "one"));
         $this->assertEquals('testValue2', $this->object->getPost('test', "two"));
     }
+    
+    
+    public function testGetSchemeHttp() {
+        $_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
+        
+        $result = $this->object->getScheme();self::
+        $this->assertEquals('http', $result);
+    }
+    
+    public function testGetSchemeHttp10() {
+        $_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.0';
+    
+        $result = $this->object->getScheme();self::
+        $this->assertEquals('http', $result);
+    }
+    
+    public function testGetSchemeHttps() {
+        $_SERVER['SERVER_PROTOCOL'] = 'HTTPS/1.1';
+    
+        $result = $this->object->getScheme();self::
+        $this->assertEquals('https', $result);
+    }
+    
+    public function testGetSchemeHttps10() {
+        $_SERVER['SERVER_PROTOCOL'] = 'HTTPS/1.0';
+    
+        $result = $this->object->getScheme();self::
+        $this->assertEquals('https', $result);
+    }
+    
 
     public function testHasPost()
     {

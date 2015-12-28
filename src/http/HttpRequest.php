@@ -328,13 +328,18 @@ class HttpRequest
     }
 
     /**
-     * Returns the scheme based on the port number (http or https only)
+     * Returns the scheme used by this request eg. http, https, etc
      *
-     * @return string
+     * @return string the scheme, always in lower case
      */
     public function getScheme()
     {
-        return $this->server("SERVER_PORT") == 80 ? "http" : "https";
+        $protocol = $_SERVER['SERVER_PROTOCOL'];
+        if (strstr($protocol, "/")) {
+            $parts = explode('/', $protocol);
+            $protocol = $parts[0];
+        }
+        return strtolower($protocol);
     }
 
     /**
