@@ -24,9 +24,7 @@ class InputFilterXssTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers compact\http\filter\impl\InputFilterXss::filter
-     *
-     * @todo Implement testFilter().
+     * @covers http\filter\impl\InputFilterXss::filter
      */
     public function testFilterString()
     {
@@ -39,9 +37,7 @@ class InputFilterXssTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers compact\http\filter\impl\InputFilterXss::filter
-     *
-     * @todo Implement testFilter().
+     * @covers http\filter\impl\InputFilterXss::filter
      */
     public function testFilterWithReplacement()
     {
