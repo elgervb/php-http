@@ -9,7 +9,6 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     *
      * @var HttpRequest
      */
     protected $object;
@@ -48,7 +47,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     
     public function testGetPostArray(){
         // Mock
-        $this->mockPost('test', ["testValue", "testValue2"]);
+        $this->mockPost('test', array("testValue", "testValue2"));
     
         $this->assertEquals('testValue', $this->object->getPost('test', 0));
         $this->assertEquals('testValue2', $this->object->getPost('test', 1));
@@ -56,7 +55,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     
     public function testGetPostNamedArray(){
         // Mock
-        $this->mockPost('test', ["one" => "testValue", "two" => "testValue2"]);
+        $this->mockPost('test', array("one" => "testValue", "two" => "testValue2"));
     
         $this->assertEquals('testValue', $this->object->getPost('test', "one"));
         $this->assertEquals('testValue2', $this->object->getPost('test', "two"));
