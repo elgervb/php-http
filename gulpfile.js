@@ -13,7 +13,7 @@ var reload  = browserSync.reload;
 */
 gulp.task('serve', function() {
 	return require('gulp-connect-php').server({
-		base: './example',
+		base: './src',
 		port: 4011,
 		keepalive: true
 	});
