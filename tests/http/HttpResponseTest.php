@@ -90,7 +90,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
 
 class MockHttpResponse extends HttpResponse {
 	
-	private $mockHeaders = [];
+	private $mockHeaders = array();
 	private $headersSend = false;
 	
 	public function isHeaderSend() {
