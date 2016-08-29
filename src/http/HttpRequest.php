@@ -10,17 +10,40 @@ use http\filter\impl\InputFilterXss;
  */
 class HttpRequest
 {
-
+	/**
+	 * @deprecated use HttpMethod constants
+	 * @var string
+	 */
     const METHOD_DELETE = 'DELETE';
-
+    /**
+     * @deprecated use HttpMethod constants
+     * @var string
+     */
     const METHOD_GET = 'GET';
-
+    /**
+     * @deprecated use HttpMethod constants
+     * @var string
+     */
     const METHOD_HEAD = 'HEAD';
-
+    /**
+     * @deprecated use HttpMethod constants
+     * @var string
+     */
+    const METHOD_OPTIONS = 'OPTIONS';
+    /**
+     * @deprecated use HttpMethod constants
+     * @var string
+     */
     const METHOD_POST = 'POST';
-
+    /**
+     * @deprecated use HttpMethod constants
+     * @var string
+     */
     const METHOD_PUT = 'PUT';
-    
+    /**
+     * @deprecated use HttpMethod constants
+     * @var string
+     */
     const METHOD_PATCH = 'PATCH';
 
     /**
@@ -435,11 +458,24 @@ class HttpRequest
     {
         return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'));
     }
+    
+    /**
+     * Checks if the request is of the type
+     * 
+     * @param HttpMethod $methodType The request type to check
+     * 
+     * @return boolean
+     */
+    public function isType($type) {
+    	return $type !== null && $type === $this->getRequestMethod(); 
+    }
 
     /**
      * Checks if this request is a DELETE request
      *
      * @return boolean
+     * 
+     * @deprecated use HttpRequest::isType(HttpMethod::TYPE*);
      */
     public function isDeleteRequest()
     {
@@ -450,6 +486,8 @@ class HttpRequest
      * Checks if this request is a GET request
      *
      * @return boolean
+     * 
+     * @deprecated use HttpRequest::isType(HttpMethod::TYPE*);
      */
     public function isGetRequest()
     {
@@ -460,6 +498,8 @@ class HttpRequest
      * Checks if this request is a HEAD request
      *
      * @return boolean
+     * 
+     * @deprecated use HttpRequest::isType(HttpMethod::TYPE*);
      */
     public function isHeadRequest()
     {
@@ -470,6 +510,8 @@ class HttpRequest
      * Checks if this request is a POST request
      *
      * @return boolean
+     * 
+     * @deprecated use HttpRequest::isType(HttpMethod::TYPE*);
      */
     public function isPostRequest()
     {
@@ -480,6 +522,8 @@ class HttpRequest
      * Checks if this request is a PUT request
      *
      * @return boolean
+     * 
+     * @deprecated use HttpRequest::isType(HttpMethod::TYPE*);
      */
     public function isPutRequest()
     {

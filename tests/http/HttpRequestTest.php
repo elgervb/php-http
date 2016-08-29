@@ -36,6 +36,11 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $_POST[$key] = $value;
     }
     
+    private function mockServer($key, $value)
+    {
+        $_SERVER[$key] = $value;
+    }
+    
     public function testgetPost()
     {
         // Mock
@@ -122,5 +127,13 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         
         // Test
         $this->assertFalse($this->object->hasPost('test'));
+    }
+    
+    public function testIsType() {
+    	
+    	$this->mockServer("REQUEST_METHOD", "POST");
+    	
+    	$this->assertTrue($this->object->isType(HttpMethod::METHOD_POST), "Looks like this isn't a POST request");
+    	$this->assertFalse($this->object->isType(HttpMethod::METHOD_GET));
     }
 }
