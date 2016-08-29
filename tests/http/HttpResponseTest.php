@@ -82,17 +82,28 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
     }
     
     public function testIsHeaderSendAfterWrite() {
-    	$this->assertFalse($this->object->isHeaderSend());
+    	$this->assertFalse($this->object->isHeaderSend(), "Headers already send");
     	$this->object->write('test');
-    	$this->assertFalse($this->object->isHeaderSend());
+    	$this->assertTrue($this->object->isHeaderSend(), "Headers not send");
     }
 }
 
 class MockHttpResponse extends HttpResponse {
 	
 	private $mockHeaders = [];
+	private $headersSend = false;
+	
+	public function isHeaderSend() {
+		return $this->headersSend;
+	}
 	
 	protected function sendHeader($aCompleteHeader, $aReplace = false, $aStatusCode = null){
 		$this->mockHeaders[] = $aCompleteHeader;
+		$this->headersSend = true;
+	}
+	
+	public function write($content) {
+		parent::write($content);
+		$this->headersSend = true;
 	}
 }
