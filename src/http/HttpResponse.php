@@ -111,6 +111,9 @@ class HttpResponse
      */
     public function addHeader($aHeader, $aValue)
     {
+    	if ($this->isHeaderSend()) {
+    		throw new HttpException('Cannot add headers as headers already send');
+    	}
         $this->headers[$aHeader] = $aValue;
     }
     
@@ -124,9 +127,9 @@ class HttpResponse
      */
     public function disableCache()
     {
-        $this->setHeader("Cache-Control", "no-store, no-cache, must-revalidate, post-check=0, pre-check=0");
-        $this->setHeader("Expires", gmdate('D, d M Y H:i:s', time() - 86400) . ' GMT');
-        $this->setHeader("Pragma", "no-cache");
+        $this->addHeader("Cache-Control", "no-store, no-cache, must-revalidate, post-check=0, pre-check=0");
+        $this->addHeader("Expires", gmdate('D, d M Y H:i:s', time() - 86400) . ' GMT');
+        $this->addHeader("Pragma", "no-cache");
     }
 
     /**
@@ -136,17 +139,23 @@ class HttpResponse
      */
     public function flush()
     {
-        if (!headers_sent()) {
-            // send response headers
-            $this->sendResponseHeader();
-            $this->sendContentTypeHeader();
-            $this->sendHeaders();
+        if (!$this->isHeaderSend()) {
+            $this->flushHeaders();
         }
         
         // send output
         if (is_resource($this->stream)) {
             fflush($this->stream);
         }
+    }
+    
+    /**
+     * Flush the headers
+     */
+    private function flushHeaders() {
+    	$this->sendResponseHeader();
+    	$this->sendContentTypeHeader();
+    	$this->sendHeaders();
     }
     
     /**
@@ -177,19 +186,6 @@ class HttpResponse
     }
 
     /**
-     * write output
-     */
-    public function write($content)
-    {
-        if (!is_resource($this->stream)) {
-            $this->stream = fopen("php://output", 'ab');
-        }
-        flock($this->stream, LOCK_EX);
-        fwrite($this->stream, $content);
-        flock($this->stream, LOCK_UN);
-    }
-
-    /**
      * Checks if the headers have already been send
      *
      * @return boolean
@@ -213,6 +209,14 @@ class HttpResponse
     }
 
     /**
+     * Sends the content type (default: Content-Type: text/html;charset= UTF-8)
+     */
+    private function sendContentTypeHeader()
+    {
+        $this->sendHeader('Content-Type: ' . $this->contentType . ';charset=' . $this->charSet);
+    }
+    
+    /**
      * Sends the response containing the statuscode (default: 200 OK)
      */
     private function sendResponseHeader()
@@ -220,14 +224,6 @@ class HttpResponse
         $reason = (array_key_exists($this->statusCode, self::$HTTP_STATUS_CODES)) ? self::$HTTP_STATUS_CODES[$this->statusCode] : null;
         
         $this->sendHeader('HTTP/1.1 ' . $this->statusCode . ' ' . $reason, true, $this->statusCode);
-    }
-
-    /**
-     * Sends the content type (default: Content-Type: text/html;charset= UTF-8)
-     */
-    private function sendContentTypeHeader()
-    {
-        $this->sendHeader('Content-Type: ' . $this->contentType . ';charset=' . $this->charSet);
     }
 
     /**
@@ -320,15 +316,18 @@ class HttpResponse
      */
     public function setEnableCache($aTimeInSeconds = 3600, $aLastModifiedGmDate = null)
     {
-        $this->setHeader("Cache-Control", "maxage=" . $aTimeInSeconds . ", must-revalidate");
-        $this->setHeader("Expires", gmdate('D, d M Y H:i:s', time() + $aTimeInSeconds) . ' GMT');
-        $this->setHeader("Pragma", "public");
-        $this->setHeader("Last-Modified", gmdate('D, d M Y H:i:s', ($aLastModifiedGmDate) ? $aLastModifiedGmDate : time() - $aTimeInSeconds) . ' GMT');
+        $this->addHeader("Cache-Control", "maxage=" . $aTimeInSeconds . ", must-revalidate");
+        $this->addHeader("Expires", gmdate('D, d M Y H:i:s', time() + $aTimeInSeconds) . ' GMT');
+        $this->addHeader("Pragma", "public");
+        $this->addHeader("Last-Modified", gmdate('D, d M Y H:i:s', ($aLastModifiedGmDate) ? $aLastModifiedGmDate : time() - $aTimeInSeconds) . ' GMT');
     }
 
+    /**
+     * @deprecated use HttpResponse::addHeader
+     */
     public function setHeader($aHeader, $aValue)
     {
-        $this->headers[$aHeader] = $aValue;
+        $this->addHeader($aHeader, $aValue);
     }
 
     /**
@@ -338,5 +337,26 @@ class HttpResponse
     public function setStatusCode($statusCode)
     {
         $this->statusCode = $statusCode;
+    }
+    
+    /**
+     * write output to the outputstream
+     * 
+     * @param $content string
+     */
+    public function write($content)
+    {
+    	if (!is_resource($this->stream)) {
+    		$this->stream = fopen("php://output", 'ab');
+    	}
+    	
+    	// we need to flush the headers first, as fwrite will do an implicit flush
+    	if (!$this->isHeaderSend()) {
+    		$this->flushHeaders();
+    	}
+    	
+    	flock($this->stream, LOCK_EX);
+    	fwrite($this->stream, $content);
+    	flock($this->stream, LOCK_UN);
     }
 }

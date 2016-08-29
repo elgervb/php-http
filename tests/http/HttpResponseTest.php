@@ -20,7 +20,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new HttpResponse();
+        $this->object = new MockHttpResponse();
     }
 
     /**
@@ -80,4 +80,19 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals(301, $code, 'Status code should be 301');
     }
+    
+    public function testIsHeaderSendAfterWrite() {
+    	$this->assertFalse($this->object->isHeaderSend());
+    	$this->object->write('test');
+    	$this->assertFalse($this->object->isHeaderSend());
+    }
+}
+
+class MockHttpResponse extends HttpResponse {
+	
+	private $mockHeaders = [];
+	
+	protected function sendHeader($aCompleteHeader, $aReplace = false, $aStatusCode = null){
+		$this->mockHeaders[] = $aCompleteHeader;
+	}
 }
