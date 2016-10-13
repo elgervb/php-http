@@ -21,8 +21,13 @@
 		"phpunit/phpunit" : "^4.8"
 	},
 	"autoload" : {
-		"psr-0" : {
-			"http" : "src"
+		"psr-4" : {
+			"http\\" : "src/http"
+		}
+	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"http\\" : "tests/http"
 		}
 	},
 	"support" : {
