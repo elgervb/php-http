@@ -1,16 +1,16 @@
 {
   "name": "gulp-http",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "PHP HTTP",
   "main": "",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "gulp test",
-    "test:coverage": "gulp test --coverage",
-    "watch": "npm test && gulp test:watch",
-    "start": "php -S localhost:4000 -t src/ -c php.ini"
+    "test": "./vendor/phpunit/phpunit/phpunit -c ./phpunit.xml",
+    "test:coverage": "$npm_package_scripts_test --coverage-text --coverage-html ./tmp/report",
+    "watch": "gulp test:watch --coverage",
+    "postinstall": "composer install --no-interaction --prefer-source"
   },
   "repository": {
     "type": "git",
@@ -23,13 +23,10 @@
   },
   "homepage": "https://github.com/elgervb/php-http",
   "devDependencies": {
-    "browser-sync": "2.14.0",
     "gulp": "3.9.1",
-    "gulp-connect-php": "0.0.8",
-    "gulp-if": "2.0.1",
     "gulp-notify": "2.2.0",
-    "gulp-phpunit": "0.17.0",
-    "lodash": "4.15.0",
-    "yargs": "5.0.0"
+    "gulp-phpunit": "0.21.4",
+    "lodash": "4.17.2",
+    "yargs": "6.4.0"
   }
 }
