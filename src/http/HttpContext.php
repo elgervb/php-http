@@ -66,12 +66,14 @@ class HttpContext
     /**
      * Reurns the http response
      *
+     * @param string the name of the IO stream to use, defaults to php://output
+     * 
      * @return \http\HttpResponse
      */
-    public function getResponse()
+    public function getResponse($ioStreamName = HttpResponse::DEFAULT_STREAM)
     {
         if ($this->response === null) {
-            $this->response = new HttpResponse();
+            $this->response = new HttpResponse($ioStreamName);
         }
         return $this->response;
     }

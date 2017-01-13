@@ -7,9 +7,7 @@ namespace http;
  */
 class HttpResponseTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
-     *
      * @var HttpResponse
      */
     protected $object;
@@ -18,8 +16,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
-    {
+    protected function setUp() {
         $this->object = new MockHttpResponse();
     }
 
@@ -31,7 +28,48 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
     {
     	
     }
+    
+    public function testAddHeader() {
+    	$this->assertFalse($this->object->hasHeader('header'), 'header already present');
+    	$this->object->addHeader('header', 'test');
+    	$this->assertTrue($this->object->hasHeader('header'));
+    }
+    
+    public function testAddHeaderAfterHeadersSend() {
+    	 // trigger headers sent
+    	 ob_start();
+    	 $this->object->write('test');
+    	 ob_end_clean();
+    	 
+    	 try {
+    	 	$this->object->addHeader('header', 'test');
+    	 } catch (\http\HttpException $ex) {
+    	 	$this->assertContains('headers already send', $ex->getMessage());
+    	 }
+    	 
+    	 $this->assertFalse($this->object->hasHeader('header'));
+    }
 
+    public function testDisableCache() {
+    	$this->object->disableCache();
+    	
+    	$this->assertTrue($this->object->hasHeader('Cache-Control'));
+    	$this->assertTrue($this->object->hasHeader('Expires'));
+    	$this->assertTrue($this->object->hasHeader('Pragma'));
+    }
+    
+    public function testRedirect() {
+    	$this->object->redirect('testloc', 301);
+    	
+    	$this->assertEquals($this->object->getStatusCode(), 301);
+    }
+    
+    public function testRedirectChangeStatusCode() {
+    	$this->object->redirect('testloc', 500);
+    	 
+    	$this->assertEquals($this->object->getStatusCode(), 302);
+    }
+    
     /**
      * @covers \http\HttpResponse::getCharSet
      */
@@ -69,6 +107,14 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals(200, $code, 'Default status code should be 200');
     }
+    
+    public function testSetCORSHeader() {
+    	$this->object->setCORSHeaders();
+    	
+    	$this->assertTrue($this->object->hasHeader('Access-Control-Allow-Methods'));
+    	$this->assertTrue($this->object->hasHeader('Access-Control-Allow-Credentials'));
+    	$this->assertTrue($this->object->hasHeader('Access-Control-Max-Age'));
+    }
 
     /**
      * @covers \http\HttpResponse::setStatusCode
@@ -83,8 +129,26 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
     
     public function testIsHeaderSendAfterWrite() {
     	$this->assertFalse($this->object->isHeaderSend(), "Headers already send");
+    	ob_start();
     	$this->object->write('test');
+    	ob_end_clean();
     	$this->assertTrue($this->object->isHeaderSend(), "Headers not send");
+    }
+    
+    public function testHasOutputAfterWrite() {
+    	ob_start();
+    	$response = new MockHttpResponse();
+    	$response->write('test');
+    	$content = ob_get_clean();
+    	$this->assertEquals($content, 'test');
+    }
+    
+    public function testHasNoOutputAfterWrite() {
+    	ob_start();
+    	$response = new MockHttpResponse('php://temp');
+    	$response->write('test');
+    	$content = ob_get_clean();
+    	$this->assertEquals($content, '');
     }
 }
 
@@ -96,6 +160,8 @@ class MockHttpResponse extends HttpResponse {
 	public function isHeaderSend() {
 		return $this->headersSend;
 	}
+	
+	
 	
 	protected function sendHeader($aCompleteHeader, $aReplace = false, $aStatusCode = null){
 		$this->mockHeaders[] = $aCompleteHeader;
