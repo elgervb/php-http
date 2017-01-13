@@ -6,7 +6,8 @@ namespace http;
  */
 class HttpResponse
 {
-
+	const DEFAULT_STREAM = 'php://output';
+	
     /**
      *
      * @var The differents defined status code by RFC 2616 {@link http://www.faqs.org/rfcs/rfc2616}
@@ -73,7 +74,7 @@ class HttpResponse
      *
      * @var array
      */
-    private $headers;
+    private $headers = array();
 
     /**
      * The status code of the response
@@ -82,6 +83,7 @@ class HttpResponse
      */
     private $statusCode = 200;
 
+    private $ioStreamName;
     /**
      *
      * @var stream
@@ -90,10 +92,12 @@ class HttpResponse
 
     /**
      * Creates a new HttpResponse
+     * 
+     * @param string the name of the IO stream to use, defaults to php://output
      */
-    public function __construct()
+    public function __construct($ioStreamName = self::DEFAULT_STREAM)
     {
-        //
+        $this->ioStreamName = $ioStreamName;
     }
 
     public function __destruct()
@@ -194,18 +198,31 @@ class HttpResponse
     {
         return headers_sent();
     }
+    
+    /**
+     * Checks is a header is present
+     * @param unknown $key
+     * @return boolean
+     */
+    public function hasHeader($key) {
+    	return array_key_exists($key, $this->headers);
+    }
 
     /**
      * Redirects the user to the given url
      *
-     * @param
-     *            string aLocation
+     * @param string aLocation
+     * @param int statuscode
      */
-    public function redirect($aLocation)
+    public function redirect($location, $statusCode = 302)
     {
-        $this->statusCode = (($this->statusCode >= 300) && ($this->statusCode < 400)) ? $this->statusCode : 302;
+    	if ($statusCode < 301 || $statusCode >= 400) {
+    		$statusCode = 302;
+    	}
+    	 
+        $this->statusCode = $statusCode;
         
-        $this->sendHeader("Location: " . $aLocation, true, $this->statusCode);
+        $this->sendHeader("Location: " . $location, true, $this->statusCode);
     }
 
     /**
@@ -285,25 +302,24 @@ class HttpResponse
     {
         $httpContext = HttpContext::get();
         $request = $httpContext->getRequest();
-        $response = $httpContext->getResponse();
         
-        $response->addHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, HEAD, PATCH, OPTIONS');
+        $this->addHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, HEAD, PATCH, OPTIONS');
         
         // origin
         $origin = $request->getHeader('Origin');
         if ($origin)
-            $response->addHeader('Access-Control-Allow-Origin', $origin); // or use '*' to allow all
+        	$this->addHeader('Access-Control-Allow-Origin', $origin); // or use '*' to allow all
                                                                               
         // custom headers
         $xHeaders = $request->getHeader('Access-Control-Request-Headers');
         if ($xHeaders){
-            $response->addHeader('Access-Control-Allow-Headers', $xHeaders);
+        	$this->addHeader('Access-Control-Allow-Headers', $xHeaders);
         }
         
-        $response->addHeader('Access-Control-Allow-Credentials', 'true');
+        $this->addHeader('Access-Control-Allow-Credentials', 'true');
         
         // change preflight request
-        $response->addHeader('Access-Control-Max-Age', 1800);
+        $this->addHeader('Access-Control-Max-Age', 1800);
     }
 
     /**
@@ -347,7 +363,7 @@ class HttpResponse
     public function write($content)
     {
     	if (!is_resource($this->stream)) {
-    		$this->stream = fopen("php://output", 'ab');
+    		$this->stream = fopen($this->ioStreamName, 'ab');
     	}
     	
     	// we need to flush the headers first, as fwrite will do an implicit flush
